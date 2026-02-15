@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Trainer</title>
+
+     <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Allenamento Schedario</h1>
+    
+        <!-- Qui verrà mostrato il numero -->
+        <div id="numeroDisplay">--</div>
+        
+        <!-- Input per la risposta -->
+        <input type="text" id="rispostaInput" placeholder="Scrivi l'immagine...">
+        
+        <!-- Bottone per verificare -->
+        <button id="btnVerifica">Verifica</button>
+        
+        <!-- Qui mostro il punteggio -->
+        <div id="punteggio">Punteggio: 0</div>
+        
+        <!-- Qui mostro se è corretta o sbagliata -->
+        <div id="feedback"></div>
+    </div>
+
+    <script src="js/Schedario.js"></script>
+    <script src="js/GiocoMemoria.js"></script>
+    <script>
+        // 1. CREO GLI OGGETTI
+        const schedario = new Schedario();
+        const gioco = new GiocoMemoria(schedario);
+
+        // 2. GENERO IL PRIMO NUMERO
+        let numero = gioco.generaNumeroCasuale();
+        document.getElementById('numeroDisplay').textContent = numero;
+
+        // 3. PRENDO GLI ELEMENTI HTML
+        const btnVerifica = document.getElementById('btnVerifica');
+        const inputRisposta = document.getElementById('rispostaInput');
+        const feedbackDiv = document.getElementById('feedback');
+
+        // 4. ASCOLTO IL CLICK DEL BOTTONE
+        btnVerifica.addEventListener('click', function() {
+            // Prendo quello che l'utente ha scritto
+            const risposta = inputRisposta.value;
+            
+            // Verifico la risposta
+            const risultato = gioco.verificaRisposta(risposta);
+            
+            // Mostro il feedback
+            if (risultato.corretta) {
+                const feedbackDiv = document.getElementById('feedback');
+                feedbackDiv.textContent = "✅ Corretto!";
+                feedbackDiv.className = "correct"; // ← aggiungi questa riga
+            } else {
+                const feedbackDiv = document.getElementById('feedback');
+                feedbackDiv.textContent = "❌ Sbagliato! Era: " + risultato.rispostaCorretta;
+                feedbackDiv.className = "wrong"; // ← aggiungi questa riga
+            }
+            
+            // Aggiorno il punteggio
+            document.getElementById('punteggio').textContent = "Punteggio: " + gioco.punteggio;
+            
+            // Genero un nuovo numero
+            numero = gioco.generaNumeroCasuale();
+            document.getElementById('numeroDisplay').textContent = numero;
+            
+            // Pulisco l'input
+            inputRisposta.value = "";
+        });
+    </script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./service-worker.js')
+                .then(() => console.log('Service Worker registrato!'))
+                .catch(err => console.log('Errore Service Worker:', err));
+        }
+    </script>
+</body>
+</html>
