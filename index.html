@@ -1,157 +1,71 @@
 <!DOCTYPE html>
 <html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Memory Trainer</title>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Memory Trainer</title>
 
-     <!-- PWA -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#667eea">
-    <link rel="apple-touch-icon" href="icon-192.png">
-    
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-    <div class="container">
-        <h1>Memory Training</h1>
-    
-        <!-- Qui verrà mostrato il numero -->
-        <div id="numeroDisplay">--</div>
+        <!-- PWA -->
+        <link rel="manifest" href="manifest.json">
+        <meta name="theme-color" content="#667eea">
+        <link rel="apple-touch-icon" href="icon-192.png">
         
-        <!-- Input per la risposta -->
-        <input type="text" id="rispostaInput" placeholder="Scrivi l'immagine...">
-        
-        <!-- Bottone per verificare -->
-        <button id="btnVerifica">Verifica</button>
-        
-        <!-- Qui mostro il punteggio -->
-        <div id="punteggio">Punteggio: 0</div>
-        <!-- Qui mostro il tempo totale -->
-        <div id="tempoTotale">Tempo totale: 0s</div>
-        
-        <!-- Qui mostro l'immagine -->
-        <img id="immagineRisposta" src="" alt="Immagine risposta" style="display: none;">
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body>
+        <div class="container">
+            <h1>Memory Training</h1>
 
-        <!-- Qui mostro se è corretta o sbagliata -->
-        <div id="feedback"></div>
+            <!-- mostro quanti numeri mancano -->
+            <div id="listaNumeri">0/110</div>
 
-        <!-- Qui mostro il tempo trascorso per rispondere -->
-        <div id="tempoTrascorso"></div>
-
-        <!-- mostro quanti numeri mancano -->
-         <div id="listaNumeri">0/110</div>
-    </div>
-
-    <script src="js/Schedario.js"></script>
-    <script src="js/GiocoMemoria.js"></script>
-    <script>
-        // 1. CREO GLI OGGETTI
-        const schedario = new Schedario();
-        const gioco = new GiocoMemoria(schedario);
-
-        // Prova a caricare i progressi
-        const progressiCaricati = gioco.caricaProgressi();
-
-        // 3. PRENDO GLI ELEMENTI HTML
-        const btnVerifica = document.getElementById('btnVerifica');
-        const inputRisposta = document.getElementById('rispostaInput');
-        const feedbackDiv = document.getElementById('feedback');
-        const imgRispostaDiv = document.getElementById('immagineRisposta');
-        const tempoTrascorsoDiv = document.getElementById('tempoTrascorso');
-        const listaNumeriDiv = document.getElementById('listaNumeri');
-
-        // 3.1 Se hai caricato progressi, aggiorna anche le statistiche visive
-        if (progressiCaricati) {
-            document.getElementById('punteggio').textContent = "Punteggio: " + gioco.punteggio;
-            const secondiTotali = (gioco.tempoTotale / 1000).toFixed(1);
-            document.getElementById('tempoTotale').textContent = "Tempo totale: " + secondiTotali + "s";
-            const numeriRimasti = 110 - gioco.numeriDisponibili.length;
-            document.getElementById('listaNumeri').textContent = numeriRimasti + "/110";
-        }
-
-        // 2. GENERO IL PRIMO NUMERO
-        let numero = gioco.generaNumeroCasuale();
-        document.getElementById('numeroDisplay').textContent = numero;
-
-        // Aggiorna il contatore dopo aver generato il numero
-        const numeriRimasti = 110 - gioco.numeriDisponibili.length;
-        listaNumeriDiv.textContent = numeriRimasti + "/110";
-
-        // 4. ASCOLTO IL CLICK DEL BOTTONE
-        btnVerifica.addEventListener('click', function() {
-            // Aggiorno quanti numeri mancano
-            listaNumeriDiv.textContent = 110 - gioco.numeriDisponibili.length + "/110";
-
-            if (btnVerifica.textContent === "Continua") {
-                // Genera nuovo numero e nascondi immagine
-                numero = gioco.generaNumeroCasuale();
-                document.getElementById('numeroDisplay').textContent = numero;
-                imgRispostaDiv.style.display = "none";
-                tempoTrascorsoDiv.textContent = "";
-                feedbackDiv.className = "";
-                feedbackDiv.textContent = "";
-
-                // Rimetti il bottone a "Verifica"
-                btnVerifica.textContent = "Verifica";
-                inputRisposta.value = "";
-                inputRisposta.focus();
-            } else {
-                // Prendo quello che l'utente ha scritto
-                const risposta = inputRisposta.value;
-                
-                // Verifico la risposta
-                const risultato = gioco.verificaRisposta(risposta);
-                
-                // Mostro il feedback
-                if (risultato.corretta) {
-                    const feedbackDiv = document.getElementById('feedback');
-                    feedbackDiv.textContent = "✅ Corretto!";
-                    feedbackDiv.className = "correct"; // ← aggiungi questa riga
-                } else {
-                    const feedbackDiv = document.getElementById('feedback');
-                    feedbackDiv.textContent = "❌ Sbagliato! Era: " + risultato.rispostaCorretta;
-                    feedbackDiv.className = "wrong"; // ← aggiungi questa riga
-                }
-                // Mostro l'immagine
-                imgRispostaDiv.src = risultato.immagine;
-                imgRispostaDiv.style.display = "block";
-
-                // Mostro il tempo 
-                const secondi = risultato.tempoTrascorso / 1000;
-                tempoTrascorsoDiv.textContent = secondi.toFixed(2) + "s";
-                
-                // Aggiorno il punteggio
-                document.getElementById('punteggio').textContent = "Punteggio: " + gioco.punteggio;
-
-                // Aggiorno il tempo totale
-                const secondiTotali = (gioco.tempoTotale / 1000).toFixed(1);
-                document.getElementById('tempoTotale').textContent = "Tempo totale: " + secondiTotali + "s";
-
-                // Genero un nuovo numero
-                //numero = gioco.generaNumeroCasuale();
-                //document.getElementById('numeroDisplay').textContent = numero;
-
-                // NASCONDI L'IMMAGINE per la nuova domanda
-                //imgRispostaDiv.style.display = "none";
-
-                // Pulisco l'input
-                inputRisposta.value = "";
-
-                btnVerifica.textContent = "Continua";
-
-                // Salvo i progressi
-                gioco.salvaProgressi();
-            }
+            <!-- Qui verrà mostrato il numero -->
+            <div id="numeroDisplay">--</div>
             
-        });
-    </script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./service-worker.js')
-                .then(() => console.log('Service Worker registrato!'))
-                .catch(err => console.log('Errore Service Worker:', err));
-        }
-    </script>
-</body>
+            <!-- Input per la risposta -->
+            <input type="text" id="rispostaInput" placeholder="Scrivi l'immagine...">
+            
+            <!-- Bottone per verificare -->
+            <button id="btnVerifica">Verifica</button>
+            
+            <!-- Qui mostro il punteggio -->
+            <div id="punteggio">Punteggio: 0</div>
+
+            <!-- Qui mostro il tempo totale -->
+            <div id="tempoTotale">Tempo totale: 0s</div>
+
+            <!-- Qui mostro se è corretta o sbagliata -->
+            <div id="feedback"></div>
+
+            <div class="stats-row">
+                <!-- Qui mostro percentuale di risposte corrette -->
+                <div id="percRisp">0.0%</div>
+                <!-- Qui mostro best Streak -->
+                <div id="bestStreak">Record: 0 🏆</div>
+                <!-- Qui mostro streak corrente-->
+                <div id="streakCorrente">Streak: 0 🔥</div>
+            </div>
+            
+            <!-- Qui mostro l'immagine -->
+            <img id="immagineRisposta" src="" alt="Immagine risposta" style="display: none;">
+
+            <!-- Qui mostro il tempo trascorso per rispondere -->
+            <div id="tempoTrascorso"></div>
+
+            <!-- Bottone per cancellare salvataggio -->
+            <button id="btnReset">🔄 Ricomincia da capo</button>
+        </div>
+
+        <script src="js/Schedario.js"></script>
+        <script src="js/GiocoMemoria.js"></script>
+        <script src="js/app.js"></script>
+        
+        <script>
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(() => console.log('Service Worker registrato!'))
+                    .catch(err => console.log('Errore Service Worker:', err));
+            }
+        </script>
+    </body>
 </html>

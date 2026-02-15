@@ -6,9 +6,16 @@ class GiocoMemoria {
         this.numeriDisponibili = [];
         this.numeroCorrente = null;
 
+        // Proprietà per timer
         this.iniziotimer = null;
         this.tempoTotale = 0;
         this.tempoTrascorso = 0;   
+
+        // Proprietà per statistiche
+        this.totRisposte = 0;
+        this.streakCorrente = 0;
+        this.bestStreak = 0;
+
 
         // Aggiungi le cifre singole: "0", "1", "2"... "9"
         for (let i = 0; i <= 9; i++) {
@@ -49,6 +56,8 @@ class GiocoMemoria {
         this.tempoTrascorso = fineTimer - this.inizioTimer;
         this.tempoTotale += this.tempoTrascorso;
 
+        this.totRisposte++;
+
         // 1. Ottieni la risposta corretta dallo schedario
         const rispostaCorretta = this.schedario.getImmagine(this.numeroCorrente);
         
@@ -56,6 +65,13 @@ class GiocoMemoria {
         if (rispostaUtente === rispostaCorretta) {
             // 3. Se corretta, aumenta il punteggio
             this.punteggio++;
+            // 3.1. Se corretta, aumento StreakCorrente
+            this.streakCorrente++;
+            // 3.2. Controllo se streakCorrente è maggiore di bestSteak
+            if(this.streakCorrente > this.bestStreak){
+                this.bestStreak = this.streakCorrente;
+            }
+
             // 4. Ritorna un oggetto con il risultato
             return {
                 corretta: true,
@@ -65,6 +81,9 @@ class GiocoMemoria {
             };
         } else {
             // Se sbagliata
+            // 1. Azzero streakCorrente
+            this.streakCorrente = 0;
+
             return {
                 corretta: false,
                 rispostaCorretta: rispostaCorretta,
@@ -85,7 +104,10 @@ class GiocoMemoria {
         const dati = {
             punteggio: this.punteggio,
             tempoTotale: this.tempoTotale,
-            numeriDisponibili: this.numeriDisponibili
+            numeriDisponibili: this.numeriDisponibili,
+            totRisposte: this.totRisposte,
+            streakCorrente: this.streakCorrente,
+            bestStreak: this.bestStreak
         };
         
         // Converti in stringa e salva
@@ -108,6 +130,9 @@ class GiocoMemoria {
         this.punteggio = dati.punteggio;
         this.tempoTotale = dati.tempoTotale;
         this.numeriDisponibili = dati.numeriDisponibili;
+        this.totRisposte = dati.totRisposte;
+        this.streakCorrente = dati.streakCorrente;
+        this.bestStreak = dati.bestStreak;
         
         return true;  // Caricamento riuscito
     }

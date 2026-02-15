@@ -188,6 +188,42 @@ h1 {
     transform: scale(1.05);
 }
 
+#btnReset {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    background: #e53e3e;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+#btnReset:hover {
+    background: #c53030;
+    transform: translateY(-2px);
+}
+
+/* Container per le statistiche in riga */
+.stats-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.stats-row > div {
+    flex: 1;
+    text-align: center;
+    padding: 12px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #667eea;
+}
+
 @keyframes bounce {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-10px); }
@@ -207,7 +243,7 @@ h1 {
     
     h1 {
         font-size: 28px;
-        margin-bottom: 15px;
+        margin-bottom: 8px;
     }
     
     #numeroDisplay {
@@ -231,6 +267,10 @@ h1 {
         font-size: 16px;
         padding: 15px;
         margin: 8px 0;
+    }
+    .stats-row {
+        flex-direction: 1;
+        /* flex-direction: column; */
     }
 }
 
