@@ -12,14 +12,14 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 10px;
 }
 
 /* Container principale */
 .container {
     background: white;
     border-radius: 20px;
-    padding: 40px;
+    padding: 20px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     max-width: 500px;
     width: 100%;
@@ -123,6 +123,19 @@ h1 {
     background: #f5f7fa;
     border-radius: 12px;
 }
+/* Tempo totale*/
+#tempoTotale {
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+}
+/* Lista Numeri */
+#listaNumeri {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    color: #667eea;
+}
 
 /* Feedback */
 #feedback {
@@ -151,6 +164,30 @@ h1 {
     animation: shake 0.5s ease;
 }
 
+/* Immagine risposta */
+#immagineRisposta {
+    display: block;
+    max-width: 200px;
+    width: 100%;
+    margin: 20px auto;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+/* Tempo trascorso */
+#tempoTrascorso {
+    text-align: center;
+    font-size: 18px;
+    color: #667eea;
+    margin-top: 15px;
+    font-weight: 600;
+}
+
+#immagineRisposta:hover {
+    transform: scale(1.05);
+}
+
 @keyframes bounce {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-10px); }
@@ -162,7 +199,7 @@ h1 {
     75% { transform: translateX(10px); }
 }
 
-/* Responsività per mobile */
+/* Responsività per mobile --------------------------------------------------------------------------------------------------------*/
 @media (max-width: 600px) {
     .container {
         padding: 30px 20px;
@@ -170,26 +207,30 @@ h1 {
     
     h1 {
         font-size: 28px;
+        margin-bottom: 15px;
     }
     
     #numeroDisplay {
         font-size: 80px;
         padding: 30px;
-        margin: 30px 0;
+        margin: 8px 0;
     }
     
     #rispostaInput, #btnVerifica {
         font-size: 16px;
         padding: 15px;
+        margin: 5px 0;
     }
     
     #punteggio {
         font-size: 20px;
+        margin: 8px 0;
     }
     
     #feedback {
         font-size: 16px;
         padding: 15px;
+        margin: 8px 0;
     }
 }
 
