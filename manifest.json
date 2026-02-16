@@ -4,7 +4,7 @@
   "description": "Allenamento per il tuo schedario mentale con conversione fonetica",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#667eea",
+  "background_color": "#ffffff",
   "theme_color": "#667eea",
   "orientation": "portrait",
   "icons": [
