@@ -13,47 +13,44 @@
         <link rel="stylesheet" href="css/style.css">
     </head>
     <body>
+
         <div class="container">
-            <h1>Memory Training</h1>
-
-            <!-- mostro quanti numeri mancano -->
-            <div id="listaNumeri">0/110</div>
-
-            <!-- Qui verrà mostrato il numero -->
-            <div id="numeroDisplay">--</div>
-            
-            <!-- Input per la risposta -->
-            <input type="text" id="rispostaInput" placeholder="Scrivi l'immagine...">
-            
-            <!-- Bottone per verificare -->
-            <button id="btnVerifica">Verifica</button>
-            
-            <!-- Qui mostro il punteggio -->
-            <div id="punteggio">Punteggio: 0</div>
-
-            <!-- Qui mostro il tempo totale -->
-            <div id="tempoTotale">Tempo totale: 0s</div>
-
-            <!-- Qui mostro se è corretta o sbagliata -->
-            <div id="feedback"></div>
-
-            <div class="stats-row">
-                <!-- Qui mostro percentuale di risposte corrette -->
-                <div id="percRisp">0.0%</div>
-                <!-- Qui mostro best Streak -->
-                <div id="bestStreak">Record: 0 🏆</div>
-                <!-- Qui mostro streak corrente-->
-                <div id="streakCorrente">Streak: 0 🔥</div>
+            <!-- Schermata Setup -->
+            <div class="schermataDiSetup active">
+                <h1>Memory Training</h1>
+                <h3>Seleziona il range: (Min: 0 e Max: 99)</h3>
+                <input type="number" id="rangeDa" placeholder="Da...">
+                <input type="number" id="rangeA" placeholder="A...">
+                <button id="btnStart">Inizia</button>
             </div>
-            
-            <!-- Qui mostro l'immagine -->
-            <img id="immagineRisposta" src="" alt="Immagine risposta" style="display: none;">
 
-            <!-- Qui mostro il tempo trascorso per rispondere -->
-            <div id="tempoTrascorso"></div>
+            <!-- Schermata di gioco -->
+            <div class="schermataDiGioco">
+                <button id="btnCambiaRange">Cambia range ⚙️</button>
+                <h1>Memory Training</h1>
 
-            <!-- Bottone per cancellare salvataggio -->
-            <button id="btnReset">🔄 Ricomincia da capo</button>
+                <div id="listaNumeri">0/110</div> <!-- mostro quanti numeri mancano -->
+                <div id="numeroDisplay">--</div> <!-- Qui verrà mostrato il numero -->
+
+                <input type="text" id="rispostaInput" placeholder="Scrivi l'immagine..."> <!-- Input per la risposta -->
+                <button id="btnVerifica">Verifica</button> <!-- Bottone per verificare -->
+
+                <div id="punteggio">Punteggio: 0</div> <!-- Qui mostro il punteggio -->
+                <div id="tempoTotale">Tempo totale: 0s</div> <!-- Qui mostro il tempo totale -->          
+                <div id="feedback"></div> <!-- Qui mostro se è corretta o sbagliata -->
+
+                <div class="stats-row">
+                    <div id="percRisp">0.0%</div> <!-- Qui mostro percentuale di risposte corrette -->
+                    <div id="bestStreak">Record: 0 🏆</div> <!-- Qui mostro best Streak -->
+                    <div id="streakCorrente">Streak: 0 🔥</div> <!-- Qui mostro streak corrente-->
+                </div>
+                            
+                <img id="immagineRisposta" src="" alt="Immagine risposta" style="display: none;"> <!-- Qui mostro l'immagine -->            
+                <div id="tempoTrascorso"></div> <!-- Qui mostro il tempo trascorso per rispondere -->
+                <button id="btnReset">🔄 Ricomincia da capo</button> <!-- Bottone per cancellare salvataggio -->
+            </div>
+
+
         </div>
 
         <script src="js/Schedario.js"></script>
@@ -67,5 +64,6 @@
                     .catch(err => console.log('Errore Service Worker:', err));
             }
         </script>
+
     </body>
 </html>

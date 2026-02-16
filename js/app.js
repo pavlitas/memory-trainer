@@ -1,9 +1,6 @@
 // 1. CREO GLI OGGETTI
 const schedario = new Schedario();
-const gioco = new GiocoMemoria(schedario);
-
-// Prova a caricare i progressi
-const progressiCaricati = gioco.caricaProgressi();
+let gioco;
 
 // 3. PRENDO GLI ELEMENTI HTML
 const btnVerifica = document.getElementById('btnVerifica');
@@ -18,14 +15,43 @@ const btnReset = document.getElementById('btnReset');
 const percRispDiv = document.getElementById('percRisp');
 const bestStreakDiv = document.getElementById('bestStreak');
 const streakCorrenteDiv = document.getElementById('streakCorrente');
+const btnStart = document.getElementById('btnStart');
+const btnCambiaRange = document.getElementById('btnCambiaRange');
+
+const schermataDiGiocoDiv = document.getElementsByClassName('schermataDiGioco')[0];
+const schermataDiSetupDiv = document.getElementsByClassName('schermataDiSetup')[0];
+
+
+
+// Prova a caricare i progressi
+const progressiSalvati = localStorage.getItem('memoryTrainerDati');
 
 // 4. Se hai caricato progressi, aggiorna anche le statistiche visive
-if (progressiCaricati) {
+if (progressiSalvati) {
+    // Ci sono salvataggi
+    const dati = JSON.parse(progressiSalvati);
+
+    // Crea il gioco con il range salvato
+    gioco = new GiocoMemoria(schedario, dati.rangeDa, dati.rangeA);
+
+    // Carica i progressi
+    gioco.caricaProgressi();
+
+    // GENERO IL PRIMO NUMERO
+    numero = gioco.generaNumeroCasuale();
+    document.getElementById('numeroDisplay').textContent = numero;
+
+    schermataDiSetupDiv.classList.remove('active');
+    schermataDiGiocoDiv.classList.add('active');
+
     punteggioDiv.textContent = "Punteggio: " + gioco.punteggio;
+    
     const secondiTotali = (gioco.tempoTotale / 1000).toFixed(1);
     tempoTotaleDiv.textContent = "Tempo totale: " + secondiTotali + "s";
-    const numeriRimasti = 110 - gioco.numeriDisponibili.length;
-    listaNumeriDiv.textContent = numeriRimasti + "/110";
+
+    const numeriRimasti = gioco.numeriDisponibili.length;
+    const numeriCompletati = gioco.totNumeri - numeriRimasti;
+    listaNumeriDiv.textContent = numeriCompletati + "/" + gioco.totNumeri;
 
     if (gioco.totRisposte > 0) {
         const percRisposte = (gioco.punteggio / gioco.totRisposte) * 100;
@@ -33,24 +59,22 @@ if (progressiCaricati) {
     }
     streakCorrenteDiv.textContent = "Streak: " + gioco.streakCorrente + " 🔥";
     bestStreakDiv.textContent = "Record: " + gioco.bestStreak + " 🏆";
+
+} else {
+    // Nessun salvataggio, mostra setup
+    schermataDiSetupDiv.classList.add('active');
 }
-
-// 5. GENERO IL PRIMO NUMERO
-let numero = gioco.generaNumeroCasuale();
-document.getElementById('numeroDisplay').textContent = numero;
-
-// Aggiorna il contatore dopo aver generato il numero
-const numeriRimasti = 110 - gioco.numeriDisponibili.length;
-listaNumeriDiv.textContent = numeriRimasti + "/110";
 
 // 6. ASCOLTO IL CLICK DEL BOTTONE
 btnVerifica.addEventListener('click', function() {
     // Aggiorno quanti numeri mancano
-    listaNumeriDiv.textContent = 110 - gioco.numeriDisponibili.length + "/110";
+    const numeriRimasti = gioco.numeriDisponibili.length;
+    const numeriCompletati = gioco.totNumeri - numeriRimasti;
+    listaNumeriDiv.textContent = numeriCompletati + "/" + gioco.totNumeri;
 
     if (btnVerifica.textContent === "Continua") {
         // Genera nuovo numero e nascondi immagine
-        numero = gioco.generaNumeroCasuale();
+        let numero = gioco.generaNumeroCasuale();
         document.getElementById('numeroDisplay').textContent = numero;
         imgRispostaDiv.style.display = "none";
         tempoTrascorsoDiv.textContent = "";
@@ -122,6 +146,31 @@ btnVerifica.addEventListener('click', function() {
         gioco.salvaProgressi();
     }
     
+});
+
+btnStart.addEventListener('click', function() {
+    const rangeDa = document.getElementById('rangeDa').value || "0";
+    const rangeA = document.getElementById('rangeA').value || "99";
+
+    gioco = new GiocoMemoria(schedario, rangeDa, rangeA);
+
+    schermataDiSetupDiv.classList.remove('active');
+    schermataDiGiocoDiv.classList.add('active');
+
+    // GENERO IL PRIMO NUMERO
+    let numero = gioco.generaNumeroCasuale();
+    document.getElementById('numeroDisplay').textContent = numero;
+
+    const numeriRimasti = gioco.numeriDisponibili.length;
+    const numeriCompletati = gioco.totNumeri - numeriRimasti;
+    listaNumeriDiv.textContent = numeriCompletati + "/" + gioco.totNumeri;
+});
+
+btnCambiaRange.addEventListener('click', function() {
+    if(confirm('Vuoi cambiare il range? Perderai tutti i progressi della sessione corrente!')) {
+        localStorage.removeItem('memoryTrainerDati');
+        location.reload();
+    }
 });
 
 btnReset.addEventListener('click', function() {

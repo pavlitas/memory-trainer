@@ -1,5 +1,5 @@
 class GiocoMemoria {
-    constructor(schedario) {
+    constructor(schedario, rangeDa = "0", rangeA = "99") {
         // Proprietà
         this.schedario = schedario;
         this.punteggio = 0;
@@ -16,19 +16,25 @@ class GiocoMemoria {
         this.streakCorrente = 0;
         this.bestStreak = 0;
 
+        this.rangeDa = parseInt(rangeDa);
+        this.rangeA = parseInt(rangeA);
 
-        // Aggiungi le cifre singole: "0", "1", "2"... "9"
         for (let i = 0; i <= 9; i++) {
-            this.numeriDisponibili.push(i.toString());
+            if (i >= this.rangeDa && i <= this.rangeA) {
+                this.numeriDisponibili.push(i.toString());
+            }
         }
-        
-        // Aggiungi le cifre doppie: "00", "01", "02"... "99"
+        // Aggiungi numeri doppi se nel range
         for (let i = 0; i <= 99; i++) {
-            this.numeriDisponibili.push(i.toString().padStart(2, '0'));
+            if (i >= this.rangeDa && i <= this.rangeA) {
+                this.numeriDisponibili.push(i.toString().padStart(2, '0'));
+            }
         }
         
         // Mescolo l'array (algoritmo Fisher-Yates)
         this.mescolaArray(this.numeriDisponibili);
+
+        this.totNumeri = this.numeriDisponibili.length;
     }
 
     mescolaArray(array) {
@@ -107,7 +113,10 @@ class GiocoMemoria {
             numeriDisponibili: this.numeriDisponibili,
             totRisposte: this.totRisposte,
             streakCorrente: this.streakCorrente,
-            bestStreak: this.bestStreak
+            bestStreak: this.bestStreak,
+            rangeDa: this.rangeDa,
+            rangeA: this.rangeA,
+            totNumeri: this.totNumeri
         };
         
         // Converti in stringa e salva
@@ -133,6 +142,9 @@ class GiocoMemoria {
         this.totRisposte = dati.totRisposte;
         this.streakCorrente = dati.streakCorrente;
         this.bestStreak = dati.bestStreak;
+        this.rangeDa = parseInt(dati.rangeDa);
+        this.rangeA = parseInt(dati.rangeA);
+        this.totNumeri = dati.totNumeri;
         
         return true;  // Caricamento riuscito
     }

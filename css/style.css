@@ -41,7 +41,7 @@ body {
 h1 {
     text-align: center;
     color: #667eea;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
     font-size: 32px;
     font-weight: 700;
 }
@@ -129,13 +129,14 @@ h1 {
     font-size: 22px;
     font-weight: bold;
 }
-/* Lista Numeri */
+/* Lista Numeri 
 #listaNumeri {
     text-align: center;
     font-size: 20px;
     font-weight: bold;
     color: #667eea;
 }
+*/
 
 /* Feedback */
 #feedback {
@@ -206,6 +207,121 @@ h1 {
     transform: translateY(-2px);
 }
 
+/* ========== SCHERMATA SETUP ========== */
+
+.schermataDiSetup {
+    text-align: center;
+    padding: 0 20px 20px 20px;
+}
+
+.schermataDiSetup h3 {
+    color: #667eea;
+    margin-bottom: 30px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.schermataDiSetup input[type="number"] {
+    width: 45%;
+    padding: 15px;
+    font-size: 18px;
+    border: 3px solid #e0e0e0;
+    border-radius: 12px;
+    outline: none;
+    transition: all 0.3s ease;
+    margin: 10px 2%;
+    text-align: center;
+    font-weight: bold;
+}
+
+.schermataDiSetup input[type="number"]:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Rimuovi le freccette dai number input (opzionale) */
+.schermataDiSetup input[type="number"]::-webkit-inner-spin-button,
+.schermataDiSetup input[type="number"]::-webkit-outer-spin-button {
+    opacity: 1;
+}
+
+#btnStart {
+    width: 100%;
+    padding: 18px;
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(72, 187, 120, 0.4);
+}
+
+#btnStart:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(72, 187, 120, 0.6);
+}
+
+#btnStart:active {
+    transform: translateY(-1px);
+}
+
+/* ========== BOTTONE CAMBIA RANGE ========== */
+
+#btnCambiaRange {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    background: #ed8936;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#btnCambiaRange:hover {
+    background: #dd6b20;
+    transform: translateY(-2px);
+}
+
+/* ========== NUMERO DISPLAY (già esistente ma ottimizzato) ========== */
+
+#listaNumeri {
+    text-align: center;
+    font-size: 16px;
+    color: #667eea;
+    font-weight: 600;
+    margin-bottom: 10px;
+    padding: 8px;
+    background: #f5f7fa;
+    border-radius: 8px;
+}
+
+/* ========== RESPONSIVE ========== */
+
+@media (max-width: 500px) {
+    .schermataDiSetup h3 {
+        font-size: 18px;
+    }
+    
+    .schermataDiSetup input[type="number"] {
+        width: 100%;
+        margin: 10px 0;
+    }
+    
+    #btnCambiaRange {
+        font-size: 13px;
+        padding: 10px;
+    }
+}
+
 /* Container per le statistiche in riga */
 .stats-row {
     display: flex;
@@ -222,6 +338,18 @@ h1 {
     font-size: 14px;
     font-weight: 600;
     color: #667eea;
+}
+
+/* Nascondi le schermate per default */
+.schermataDiSetup,
+.schermataDiGioco {
+    display: none;
+}
+
+/* Mostra solo quella attiva */
+.schermataDiSetup.active,
+.schermataDiGioco.active {
+    display: block;
 }
 
 @keyframes bounce {

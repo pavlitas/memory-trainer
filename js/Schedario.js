@@ -11,12 +11,12 @@ class Schedario {
             "5": { nome: "ali", immagine: "https://placehold.co/300x300/555555/FFF" },
             "6": { nome: "cia", immagine: "https://placehold.co/300x300/666666/FFF" },
             "7": { nome: "ago", immagine: "https://placehold.co/300x300/777777/FFF" },
-            "8": { nome: "uva", immagine: "../images/uva.png" },
+            "8": { nome: "uva", immagine: "memory-trainer/images/uva.png" },
             "9": { nome: "ape", immagine: "https://placehold.co/300x300/999999/FFF" },
             // Decine 00-09
             "00": { nome: "sasso", immagine: "https://placehold.co/300x300/000000/FFF" },
             "01": { nome: "sedia", immagine: "https://placehold.co/300x300/000000/FFF" },
-            "02": { nome: "zaino", immagine: "../images/zaino.png" },
+            "02": { nome: "zaino", immagine: "memory-trainer/images/zaino.png" },
             "03": { nome: "seme", immagine: "https://placehold.co/300x300/000000/FFF" },
             "04": { nome: "zorro", immagine: "https://placehold.co/300x300/000000/FFF" },
             "05": { nome: "sole", immagine: "https://placehold.co/300x300/000000/FFF" },
@@ -27,7 +27,7 @@ class Schedario {
 
             // Decine 10-19
             "10": { nome: "tasso", immagine: "https://placehold.co/300x300/111111/FFF" },
-            "11": { nome: "tette", immagine: "../images/tette.png" },
+            "11": { nome: "tette", immagine: "memory-trainer/images/tette.png" },
             "12": { nome: "tonno", immagine: "https://placehold.co/300x300/111111/FFF" },
             "13": { nome: "dama", immagine: "https://placehold.co/300x300/111111/FFF" },
             "14": { nome: "toro", immagine: "https://placehold.co/300x300/111111/FFF" },
@@ -55,7 +55,7 @@ class Schedario {
             "32": { nome: "mano", immagine: "https://placehold.co/300x300/333333/FFF" },
             "33": { nome: "mamma", immagine: "https://placehold.co/300x300/333333/FFF" },
             "34": { nome: "mara", immagine: "https://placehold.co/300x300/333333/FFF" },
-            "35": { nome: "mela", immagine: "../images/mela.png" },
+            "35": { nome: "mela", immagine: "memory-trainer/images/mela.png" },
             "36": { nome: "magia", immagine: "https://placehold.co/300x300/333333/FFF" },
             "37": { nome: "mago", immagine: "https://placehold.co/300x300/333333/FFF" },
             "38": { nome: "mafia", immagine: "https://placehold.co/300x300/333333/FFF" },
@@ -98,7 +98,7 @@ class Schedario {
             "69": { nome: "jeep", immagine: "https://placehold.co/300x300/666666/FFF" },
 
             // Decine 70-79
-            "70": { nome: "cazzo", immagine: "../images/cazzo.png" },
+            "70": { nome: "cazzo", immagine: "memory-trainer/images/cazzo.png" },
             "71": { nome: "gatto", immagine: "https://placehold.co/300x300/777777/FFF" },
             "72": { nome: "cane", immagine: "https://placehold.co/300x300/777777/FFF" },
             "73": { nome: "game", immagine: "https://placehold.co/300x300/777777/FFF" },
@@ -116,7 +116,7 @@ class Schedario {
             "83": { nome: "fiamma", immagine: "https://placehold.co/300x300/888888/FFF" },
             "84": { nome: "faro", immagine: "https://placehold.co/300x300/888888/FFF" },
             "85": { nome: "falò", immagine: "https://placehold.co/300x300/888888/FFF" },
-            "86": { nome: "faccia", immagine: "../images/viso.png" },
+            "86": { nome: "faccia", immagine: "memory-trainer/images/viso.png" },
             "87": { nome: "vacca", immagine: "https://placehold.co/300x300/888888/FFF" },
             "88": { nome: "fava", immagine: "https://placehold.co/300x300/888888/FFF" },
             "89": { nome: "fap", immagine: "https://placehold.co/300x300/888888/FFF" },
