@@ -17,65 +17,66 @@ const bestStreakDiv = document.getElementById('bestStreak');
 const streakCorrenteDiv = document.getElementById('streakCorrente');
 const btnStart = document.getElementById('btnStart');
 const btnCambiaRange = document.getElementById('btnCambiaRange');
+const numeroDisplayDiv = document.getElementById('numeroDisplay');
 
 const schermataDiGiocoDiv = document.getElementsByClassName('schermataDiGioco')[0];
 const schermataDiSetupDiv = document.getElementsByClassName('schermataDiSetup')[0];
 
+let numeriRimasti;
+let numeriCompletati;
 
 
 // Prova a caricare i progressi
-const progressiSalvati = localStorage.getItem('memoryTrainerDati');
+const datiSalvati = localStorage.getItem('memoryTrainerDati');
 
 // 4. Se hai caricato progressi, aggiorna anche le statistiche visive
-if (progressiSalvati) {
-    // Ci sono salvataggi
-    const dati = JSON.parse(progressiSalvati);
+    if (datiSalvati) {
+        // Ci sono salvataggi
+        const dati = JSON.parse(datiSalvati);
 
-    // Crea il gioco con il range salvato
-    gioco = new GiocoMemoria(schedario, dati.rangeDa, dati.rangeA);
+        // Crea il gioco con il range salvato
+        gioco = new GiocoMemoria(schedario, dati.rangeDa, dati.rangeA, datiSalvati);
 
-    // Carica i progressi
-    gioco.caricaProgressi();
+        // Carica i progressi
+        gioco.caricaProgressi();
 
-    // GENERO IL PRIMO NUMERO
-    numero = gioco.generaNumeroCasuale();
-    document.getElementById('numeroDisplay').textContent = numero;
+        // GENERO IL PRIMO NUMERO
+        let numero = gioco.generaNumeroCasuale();
+        numeroDisplayDiv.textContent = numero;
 
-    schermataDiSetupDiv.classList.remove('active');
-    schermataDiGiocoDiv.classList.add('active');
+        schermataDiSetupDiv.classList.remove('active');
+        schermataDiGiocoDiv.classList.add('active');
 
-    punteggioDiv.textContent = "Punteggio: " + gioco.punteggio;
-    
-    const secondiTotali = (gioco.tempoTotale / 1000).toFixed(1);
-    tempoTotaleDiv.textContent = "Tempo totale: " + secondiTotali + "s";
+        punteggioDiv.textContent = "Punteggio: " + gioco.punteggio;
+        
+        const secondiTotali = (gioco.tempoTotale / 1000).toFixed(1);
+        tempoTotaleDiv.textContent = "Tempo totale: " + secondiTotali + "s";
 
-    const numeriRimasti = gioco.numeriDisponibili.length;
-    const numeriCompletati = gioco.totNumeri - numeriRimasti;
-    listaNumeriDiv.textContent = numeriCompletati + "/" + gioco.totNumeri;
+        numeriRimasti = gioco.numeriDisponibili.length;
+        numeriCompletati = gioco.totNumeri - numeriRimasti;
+        listaNumeriDiv.textContent = numeriCompletati + "/" + gioco.totNumeri;
+        
+        if (gioco.totRisposte > 0) {
+            const percRisposte = (gioco.punteggio / gioco.totRisposte) * 100;
+            percRispDiv.textContent = percRisposte.toFixed(0) + "%";
+        }
+        streakCorrenteDiv.textContent = "Streak: " + gioco.streakCorrente + " 🔥";
+        bestStreakDiv.textContent = "Record: " + gioco.bestStreak + " 🏆";
 
-    if (gioco.totRisposte > 0) {
-        const percRisposte = (gioco.punteggio / gioco.totRisposte) * 100;
-        percRispDiv.textContent = percRisposte.toFixed(0) + "%";
+    } else {
+        // Nessun salvataggio, mostra setup
+        schermataDiSetupDiv.classList.add('active');
     }
-    streakCorrenteDiv.textContent = "Streak: " + gioco.streakCorrente + " 🔥";
-    bestStreakDiv.textContent = "Record: " + gioco.bestStreak + " 🏆";
-
-} else {
-    // Nessun salvataggio, mostra setup
-    schermataDiSetupDiv.classList.add('active');
-}
 
 // 6. ASCOLTO IL CLICK DEL BOTTONE
 btnVerifica.addEventListener('click', function() {
-    // Aggiorno quanti numeri mancano
-    const numeriRimasti = gioco.numeriDisponibili.length;
-    const numeriCompletati = gioco.totNumeri - numeriRimasti;
-    listaNumeriDiv.textContent = numeriCompletati + "/" + gioco.totNumeri;
-
     if (btnVerifica.textContent === "Continua") {
         // Genera nuovo numero e nascondi immagine
         let numero = gioco.generaNumeroCasuale();
-        document.getElementById('numeroDisplay').textContent = numero;
+        numeroDisplayDiv.textContent = numero;
+        // Aggiorno quanti numeri mancano
+        numeriRimasti = gioco.numeriDisponibili.length;
+        numeriCompletati = gioco.totNumeri - numeriRimasti;
         imgRispostaDiv.style.display = "none";
         tempoTrascorsoDiv.textContent = "";
         feedbackDiv.className = "";
@@ -85,7 +86,12 @@ btnVerifica.addEventListener('click', function() {
         btnVerifica.textContent = "Verifica";
         inputRisposta.value = "";
         inputRisposta.focus();
-    } else {
+
+        if(numeriRimasti > 0) {
+            listaNumeriDiv.textContent = numeriCompletati + "/" + gioco.totNumeri;
+        }
+        
+    } else if (btnVerifica.textContent === "Verifica") {
         // Prendo quello che l'utente ha scritto
         const risposta = inputRisposta.value;
         
@@ -94,11 +100,11 @@ btnVerifica.addEventListener('click', function() {
         
         // Mostro il feedback
         if (risultato.corretta) {
-            const feedbackDiv = document.getElementById('feedback');
+            //const feedbackDiv = document.getElementById('feedback');
             feedbackDiv.textContent = "✅ Corretto!";
             feedbackDiv.className = "correct"; // ← aggiungi questa riga
         } else {
-            const feedbackDiv = document.getElementById('feedback');
+            //const feedbackDiv = document.getElementById('feedback');
             feedbackDiv.textContent = "❌ Sbagliato! Era: " + risultato.rispostaCorretta;
             feedbackDiv.className = "wrong"; // ← aggiungi questa riga
         }
@@ -111,11 +117,11 @@ btnVerifica.addEventListener('click', function() {
         tempoTrascorsoDiv.textContent = secondi.toFixed(2) + "s";
         
         // Aggiorno il punteggio
-        document.getElementById('punteggio').textContent = "Punteggio: " + gioco.punteggio;
+        punteggioDiv.textContent = "Punteggio: " + gioco.punteggio;
 
         // Aggiorno il tempo totale
         const secondiTotali = (gioco.tempoTotale / 1000).toFixed(1);
-        document.getElementById('tempoTotale').textContent = "Tempo totale: " + secondiTotali + "s";
+        tempoTotaleDiv.textContent = "Tempo totale: " + secondiTotali + "s";
 
         // Mostro percentuale risposte corrette
         if (gioco.totRisposte > 0) {
@@ -129,21 +135,31 @@ btnVerifica.addEventListener('click', function() {
         // Mostro streak corrente
         streakCorrenteDiv.textContent = "Streak: " + gioco.streakCorrente + " 🔥"
 
-
-        // Genero un nuovo numero
-        //numero = gioco.generaNumeroCasuale();
-        //document.getElementById('numeroDisplay').textContent = numero;
-
-        // NASCONDI L'IMMAGINE per la nuova domanda
-        //imgRispostaDiv.style.display = "none";
-
         // Pulisco l'input
         inputRisposta.value = "";
 
         btnVerifica.textContent = "Continua";
-
+        
+        // Controllo se il mazzo è terminato
+        if(numeriRimasti <= 0) {
+            listaNumeriDiv.textContent ="Hai terminato il mazzo!";
+            btnVerifica.textContent = "Fine";
+        }
         // Salvo i progressi
         gioco.salvaProgressi();
+
+    } else if (btnVerifica.textContent === "Fine") {
+        // L'utente ha fatto il massimo del punteggio
+        if(gioco.totNumeri === gioco.punteggio) {
+            alert("hai fatto il massimo del punteggio!");
+            localStorage.removeItem('memoryTrainerDati');
+            location.reload();  // Ricarica la pagina
+            
+        } else {
+            alert("non hai vinto");
+            localStorage.removeItem('memoryTrainerDati');
+            location.reload();  // Ricarica la pagina
+        }
     }
     
 });
@@ -152,15 +168,16 @@ btnStart.addEventListener('click', function() {
     const rangeDa = document.getElementById('rangeDa').value || "0";
     const rangeA = document.getElementById('rangeA').value || "99";
 
-    gioco = new GiocoMemoria(schedario, rangeDa, rangeA);
+    gioco = new GiocoMemoria(schedario, rangeDa, rangeA, null);
 
     schermataDiSetupDiv.classList.remove('active');
     schermataDiGiocoDiv.classList.add('active');
 
     // GENERO IL PRIMO NUMERO
     let numero = gioco.generaNumeroCasuale();
-    document.getElementById('numeroDisplay').textContent = numero;
+    numeroDisplayDiv.textContent = numero;
 
+    //TODO AGGIORNA UI ---------------------------------------------------------------------------------------------------
     const numeriRimasti = gioco.numeriDisponibili.length;
     const numeriCompletati = gioco.totNumeri - numeriRimasti;
     listaNumeriDiv.textContent = numeriCompletati + "/" + gioco.totNumeri;

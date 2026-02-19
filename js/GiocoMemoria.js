@@ -1,5 +1,5 @@
 class GiocoMemoria {
-    constructor(schedario, rangeDa = "0", rangeA = "99") {
+    constructor(schedario, rangeDa = "0", rangeA = "99", datiSalvati) {
         // Proprietà
         this.schedario = schedario;
         this.punteggio = 0;
@@ -10,7 +10,7 @@ class GiocoMemoria {
         this.iniziotimer = null;
         this.tempoTotale = 0;
         this.tempoTrascorso = 0;   
-
+        
         // Proprietà per statistiche
         this.totRisposte = 0;
         this.streakCorrente = 0;
@@ -19,22 +19,28 @@ class GiocoMemoria {
         this.rangeDa = parseInt(rangeDa);
         this.rangeA = parseInt(rangeA);
 
-        for (let i = 0; i <= 9; i++) {
-            if (i >= this.rangeDa && i <= this.rangeA) {
-                this.numeriDisponibili.push(i.toString());
+        this.totNumeri = 0;
+
+        if(!datiSalvati) {
+            for (let i = 0; i <= 9; i++) {
+                if (i >= this.rangeDa && i <= this.rangeA) {
+                    this.numeriDisponibili.push(i.toString());
+                }
             }
-        }
-        // Aggiungi numeri doppi se nel range
-        for (let i = 0; i <= 99; i++) {
-            if (i >= this.rangeDa && i <= this.rangeA) {
-                this.numeriDisponibili.push(i.toString().padStart(2, '0'));
+            // Aggiungi numeri doppi se nel range
+            for (let i = 0; i <= 99; i++) {
+                if (i >= this.rangeDa && i <= this.rangeA) {
+                    this.numeriDisponibili.push(i.toString().padStart(2, '0'));
+                }
             }
+            
+            // Mescolo l'array (algoritmo Fisher-Yates)
+            this.mescolaArray(this.numeriDisponibili);
+            this.totNumeri = this.numeriDisponibili.length;
         }
         
-        // Mescolo l'array (algoritmo Fisher-Yates)
-        this.mescolaArray(this.numeriDisponibili);
 
-        this.totNumeri = this.numeriDisponibili.length;
+       
     }
 
     mescolaArray(array) {

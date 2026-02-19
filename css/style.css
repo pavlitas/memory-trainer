@@ -147,7 +147,7 @@ h1 {
     font-weight: bold;
     font-size: 18px;
     min-height: 60px;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
@@ -157,12 +157,15 @@ h1 {
     background: linear-gradient(135deg, #c6f6d5 0%, #9ae6b4 100%);
     color: #22543d;
     animation: bounce 0.5s ease;
+    display: flex;
+    
 }
 
 #feedback.wrong {
     background: linear-gradient(135deg, #fed7d7 0%, #fc8181 100%);
     color: #742a2a;
     animation: shake 0.5s ease;
+    display: flex;
 }
 
 /* Immagine risposta */
@@ -340,6 +343,18 @@ h1 {
     color: #667eea;
 }
 
+/* Fix per la tastiera su mobile 
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+/*
+.container {
+    height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+*/
 /* Nascondi le schermate per default */
 .schermataDiSetup,
 .schermataDiGioco {
