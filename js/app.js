@@ -41,27 +41,12 @@ const datiSalvati = localStorage.getItem('memoryTrainerDati');
         gioco.caricaProgressi();
 
         // GENERO IL PRIMO NUMERO
-        let numero = gioco.generaNumeroCasuale();
-        numeroDisplayDiv.textContent = numero;
-
+        gioco.generaNumeroCasuale();
+        //numeroDisplayDiv.textContent = numero;
         schermataDiSetupDiv.classList.remove('active');
         schermataDiGiocoDiv.classList.add('active');
 
-        punteggioDiv.textContent = "Punteggio: " + gioco.punteggio;
-        
-        const secondiTotali = (gioco.tempoTotale / 1000).toFixed(1);
-        tempoTotaleDiv.textContent = "Tempo totale: " + secondiTotali + "s";
-
-        numeriRimasti = gioco.numeriDisponibili.length;
-        numeriCompletati = gioco.totNumeri - numeriRimasti;
-        listaNumeriDiv.textContent = numeriCompletati + "/" + gioco.totNumeri;
-        
-        if (gioco.totRisposte > 0) {
-            const percRisposte = (gioco.punteggio / gioco.totRisposte) * 100;
-            percRispDiv.textContent = percRisposte.toFixed(0) + "%";
-        }
-        streakCorrenteDiv.textContent = "Streak: " + gioco.streakCorrente + " 🔥";
-        bestStreakDiv.textContent = "Record: " + gioco.bestStreak + " 🏆";
+        aggiornaUI();
 
     } else {
         // Nessun salvataggio, mostra setup
@@ -72,24 +57,16 @@ const datiSalvati = localStorage.getItem('memoryTrainerDati');
 btnVerifica.addEventListener('click', function() {
     if (btnVerifica.textContent === "Continua") {
         // Genera nuovo numero e nascondi immagine
-        let numero = gioco.generaNumeroCasuale();
-        numeroDisplayDiv.textContent = numero;
-        // Aggiorno quanti numeri mancano
-        numeriRimasti = gioco.numeriDisponibili.length;
-        numeriCompletati = gioco.totNumeri - numeriRimasti;
+        gioco.generaNumeroCasuale();
+        aggiornaUI();
         imgRispostaDiv.style.display = "none";
         tempoTrascorsoDiv.textContent = "";
         feedbackDiv.className = "";
         feedbackDiv.textContent = "";
-
-        // Rimetti il bottone a "Verifica"
-        btnVerifica.textContent = "Verifica";
         inputRisposta.value = "";
         inputRisposta.focus();
-
-        if(numeriRimasti > 0) {
-            listaNumeriDiv.textContent = numeriCompletati + "/" + gioco.totNumeri;
-        }
+        // Rimetti il bottone a "Verifica"
+        btnVerifica.textContent = "Verifica";
         
     } else if (btnVerifica.textContent === "Verifica") {
         // Prendo quello che l'utente ha scritto
@@ -112,32 +89,10 @@ btnVerifica.addEventListener('click', function() {
         imgRispostaDiv.src = risultato.immagine;
         imgRispostaDiv.style.display = "block";
 
-        // Mostro il tempo 
-        const secondi = risultato.tempoTrascorso / 1000;
-        tempoTrascorsoDiv.textContent = secondi.toFixed(2) + "s";
-        
-        // Aggiorno il punteggio
-        punteggioDiv.textContent = "Punteggio: " + gioco.punteggio;
-
-        // Aggiorno il tempo totale
-        const secondiTotali = (gioco.tempoTotale / 1000).toFixed(1);
-        tempoTotaleDiv.textContent = "Tempo totale: " + secondiTotali + "s";
-
-        // Mostro percentuale risposte corrette
-        if (gioco.totRisposte > 0) {
-            const percRisposte = (gioco.punteggio / gioco.totRisposte) * 100;
-            percRispDiv.textContent = percRisposte.toFixed(1) + "%";
-        }
-        
-        // Mostro best Streak
-        bestStreakDiv.textContent = "Record: " + gioco.bestStreak + " 🏆";
-
-        // Mostro streak corrente
-        streakCorrenteDiv.textContent = "Streak: " + gioco.streakCorrente + " 🔥"
+        aggiornaUI();
 
         // Pulisco l'input
         inputRisposta.value = "";
-
         btnVerifica.textContent = "Continua";
         
         // Controllo se il mazzo è terminato
@@ -174,13 +129,8 @@ btnStart.addEventListener('click', function() {
     schermataDiGiocoDiv.classList.add('active');
 
     // GENERO IL PRIMO NUMERO
-    let numero = gioco.generaNumeroCasuale();
-    numeroDisplayDiv.textContent = numero;
-
-    //TODO AGGIORNA UI ---------------------------------------------------------------------------------------------------
-    const numeriRimasti = gioco.numeriDisponibili.length;
-    const numeriCompletati = gioco.totNumeri - numeriRimasti;
-    listaNumeriDiv.textContent = numeriCompletati + "/" + gioco.totNumeri;
+    gioco.generaNumeroCasuale();
+    aggiornaUI();
 });
 
 btnCambiaRange.addEventListener('click', function() {
@@ -196,3 +146,25 @@ btnReset.addEventListener('click', function() {
         location.reload();  // Ricarica la pagina
     }
 });
+
+// Funzione che aggiorna user interface
+function aggiornaUI() {
+    numeroDisplayDiv.textContent = gioco.numeroCorrente;
+    punteggioDiv.textContent = "Punteggio: " + gioco.punteggio;
+
+    const secondiTotali = (gioco.tempoTotale / 1000).toFixed(1);
+    tempoTotaleDiv.textContent = "Tempo totale: " + secondiTotali + "s";
+
+    numeriRimasti = gioco.numeriDisponibili.length;
+    numeriCompletati = gioco.totNumeri - numeriRimasti;
+    if(numeriRimasti > 0) {
+        listaNumeriDiv.textContent = numeriCompletati + "/" + gioco.totNumeri;
+    }
+    streakCorrenteDiv.textContent = "Streak: " + gioco.streakCorrente + " 🔥";
+    bestStreakDiv.textContent = "Record: " + gioco.bestStreak + " 🏆";
+
+    if (gioco.totRisposte > 0) {
+        const percRisposte = (gioco.punteggio / gioco.totRisposte) * 100;
+        percRispDiv.textContent = percRisposte.toFixed(0) + "%";
+    }
+}
